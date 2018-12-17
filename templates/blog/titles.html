@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 {% block title %}
    my blog titles
 {% endblock %}
@@ -20,3 +20,6 @@
   <p>跟我学PYTHON</p>
 </div>
 {% endblock  %}
+{% block javascript %}
+  <script href="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+{% endblock %}

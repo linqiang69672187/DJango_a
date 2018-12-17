@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% extends "base.html" %}
 {% block title %}
     {{ blog.tile }}
@@ -8,4 +9,7 @@
 
 <p>{{ blog.body }}</p>
     <span>发布时间：{{ publish }}</span>
+{% endblock %}
+{% block javascript %}
+  <script href="{% static 'js/jquery-3.1.1.min.js' %}"></script>
 {% endblock %}
