@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
-from .forms import LoginForm,RegistrationForm,UserProfileForm
+from .forms import LoginForm,RegistrationForm,UserProfileForm,UserInfoForm
+from django.contrib.auth.decorators import login_required
+from .models import UserInfo,UerProfile
+from django.contrib.auth.models import User
 
+@login_required(login_url='/account/login/')
 
 # Create your views here.
 def user_login(request):
@@ -22,21 +26,36 @@ def user_login(request):
         login_form=LoginForm();
         return render(request,"account/login.html",{"form":login_form})
 
+#注册账号
 def register(request):
-    if request.method=="POST":
-        user_form=RegistrationForm(request.POST)
+    if request.method == "POST":
+        user_form = RegistrationForm(request.POST)
         userprofile_form = UserProfileForm(request.POST)
-        if user_form.is_valid()*userprofile_form.is_valid():
+        userinfo_form = UserInfoForm(request.POST)
+        if user_form.is_valid() * userprofile_form.is_valid():
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data["password"])
             new_user.save()
             new_profile = userprofile_form.save(commit=False)
-            new_profile.user=new_user
+            new_profile.user = new_user
             new_profile.save()
-            return  HttpResponse("注册成功")
+            new_userinfo = userinfo_form.save(commit=False)
+            new_userinfo.user=new_user
+            new_userinfo.save()
+            return HttpResponse("注册成功")
         else:
             return HttpResponse("注册失败")
     else:
         user_form = RegistrationForm()
         userprofile_form = UserProfileForm()
-        return render(request,"account/register.html",{"form":user_form,"profile":userprofile_form})
+        return render(request, "account/register.html", {"form": user_form, "profile": userprofile_form})
+#个人信息显示
+def myself(request):
+    user = User.objects.get(username=request.user.username)
+    userprofile = UerProfile.objects.get(user=user)
+    userinfo = UserInfo.objects.get(user=user)
+    return render(request,"account/myself.html",{"user":user,"userinf":userinfo,"userprofile":userprofile})
+
+
+
+

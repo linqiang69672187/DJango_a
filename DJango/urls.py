@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from blog import views
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +25,7 @@ urlpatterns = [
     path('', admin.site.urls),
     path(r'account/',include('account.urls')),
     path(r'accounts/',include('account.urls')),
-    path(r'pwd_reset/', include('password_reset.urls')),
+    path('pwd_reset/', include('password_reset.urls')),
+    #在Django 2.0+ 我们可以省略namespace=
+    path('pwd_reset/', include(('password_reset.urls','pwd_reset'),namespace='pwd_reset')),
 ]

@@ -19,5 +19,7 @@
         </div>
         <input type="submit" class="btn btn-primary btn-lg" value="登录" />
     </form>
+    <p style="margin-top: 10px"><a href="{% url 'pwd_reset:password_reset_recover' %}"> 重置密码</a></p>
+    <p style="margin-top: 10px"><a href="{% url 'account:user_register' %}">注册新用户</a> </p>
     </div>
 {% endblock %}
