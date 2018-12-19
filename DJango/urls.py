@@ -23,4 +23,6 @@ urlpatterns = [
     path(r'blog/',include('blog.urls')),
     path('', admin.site.urls),
     path(r'account/',include('account.urls')),
+    path(r'accounts/',include('account.urls')),
+    path(r'pwd_reset/', include('password_reset.urls')),
 ]

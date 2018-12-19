@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'account',
+    'password_reset',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static")
 ]
+LOGIN_REDIRECT_URL='/blog/'
+
+EMAIL_HOST = 'smtp.eastcom.com'
+EMAIL_HOST_USER = 'linqiang'
+EMAIL_HOST_PASSWORD = '12345679lq'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'linqiang@eastcom.com'
