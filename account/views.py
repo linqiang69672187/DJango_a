@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
-from .forms import LoginForm,RegistrationForm,UserProfileForm,UserInfoForm
+from .forms import LoginForm,RegistrationForm,UserProfileForm,UserInfoForm,UserForm
 from django.contrib.auth.decorators import login_required
 from .models import UserInfo,UerProfile
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+
 
 @login_required(login_url='/account/login/')
 
@@ -55,6 +57,16 @@ def myself(request):
     userprofile = UerProfile.objects.get(user=user)
     userinfo = UserInfo.objects.get(user=user)
     return render(request,"account/myself.html",{"user":user,"userinf":userinfo,"userprofile":userprofile})
+
+#个人信息编辑
+def myself_edit(request):
+    user=User.objects.get(username=request.user.username)
+    userprofile = UerProfile.objects.get(user=request.user)
+    userinfo = UserInfo.objects.get(user=request.user)
+    if request.method=="POST":
+        
+    else:
+
 
 
 
