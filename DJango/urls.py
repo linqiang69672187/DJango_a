@@ -28,5 +28,5 @@ urlpatterns = [
     path('pwd_reset/', include('password_reset.urls')),
     #在Django 2.0+ 我们可以省略namespace=
     path('pwd_reset/', include(('password_reset.urls','pwd_reset'),namespace='pwd_reset')),
-    path('article',include(('article.urls','article'),namespace='article'))
+    path('article/',include(('article.urls','article'),namespace='article'))
 ]
