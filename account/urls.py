@@ -19,5 +19,7 @@ urlpatterns=[
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name='account/password_reset_done.html'),name='password_reset_done'),
     re_path('password_reset_confirm/(?P<uidb64>[-\w]+)/(?P<token>[-\w]+)/$',auth_views.PasswordResetConfirmView.as_view(template_name='account/password_reset_confirm.html',success_url='/account/password_reset_complete/'),name='password_reset_confirm'),
     path('password_reset_complete/',auth_views.PasswordResetCompleteView.as_view(template_name='account/password_reset_complete.html'),name='password_reset_complete'),
-    path('my_information/',views.myself,name='my_information')
+    path('my_information/',views.myself,name='my_information'),
+    path('edit_my_information/', views.myself_edit, name='edit_my_information'),
+    path('my_image/', views.my_image, name='my_image'),
 ]
