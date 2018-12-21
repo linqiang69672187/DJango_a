@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from .forms import ArticleColumnForm,ArticlePostForm
 from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -71,3 +72,44 @@ def article_post(request):
         article_post_form = ArticlePostForm()
         article_columns=ArticleColumn.objects.filter(user=request.user)
         return render(request,"article/column/article_post.html",{"arcticle_post_form":article_post_form,"article_columns":article_columns})
+
+@login_required(login_url='/account/login/')
+def article_list(request):
+    articles = ArticlePost.objects.filter(author=request.user)
+    return render(request,"article/column/article_list.html",{"articles":articles})
+
+@login_required(login_url='/account/login/')
+@require_POST  #装饰器此视图只接收通过POST提交的数据
+@csrf_exempt
+def edit_article(request):
+    article_id=request.POST["article_id"]
+    title = request.POST["title"]
+    article_column = request.POST["article_column"]
+    body =request.POST["body"]
+    try:
+        data = ArticlePost.objects.get(id=article_id)
+        data.title = title
+        data.column = article_column
+        data.body = body
+        data.save()
+        return  HttpResponse(1)
+    except:
+        return  HttpResponse(2)
+
+
+@login_required(login_url='/account/login/')
+def article_detail(request,id):
+    article=get_object_or_404(ArticlePost,id=id)
+    return render(request,"article/column/article_detail.html",{"article":article})
+
+@login_required(login_url='/account/login/')
+@require_POST  #装饰器此视图只接收通过POST提交的数据
+@csrf_exempt
+def del_article(request):
+    column_id =request.POST["article_id"]
+    try:
+        line = ArticlePost.objects.get(id=column_id)
+        line.delete()
+        return HttpResponse(1)
+    except:
+        return HttpResponse(2)
