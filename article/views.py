@@ -4,8 +4,9 @@ from .models import  ArticleColumn,ArticlePost
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from .forms import ArticleColumnForm,ArticlePostForm
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST,require_GET
 from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 
@@ -79,22 +80,15 @@ def article_list(request):
     return render(request,"article/column/article_list.html",{"articles":articles})
 
 @login_required(login_url='/account/login/')
-@require_POST  #装饰器此视图只接收通过POST提交的数据
+#装饰器此视图只接收通过get提交的数据
 @csrf_exempt
-def edit_article(request):
-    article_id=request.POST["article_id"]
-    title = request.POST["title"]
-    article_column = request.POST["article_column"]
-    body =request.POST["body"]
-    try:
-        data = ArticlePost.objects.get(id=article_id)
-        data.title = title
-        data.column = article_column
-        data.body = body
-        data.save()
-        return  HttpResponse(1)
-    except:
-        return  HttpResponse(2)
+def edit_article(request,article_id):
+    if request.method=="GET":
+        article_columns = ArticleColumn.objects.get(user=request.user)
+        article=ArticlePost.objects.get(id=article_id)
+        article_form = ArticlePostForm(initial={"title":article.title})
+        article_columnfrom = ArticleColumnForm()
+        return render(request,"article/column/redit_article.html",{"article":article,"article_columns":article_columns,"article_form":article_form,"article_columnform":article_columnfrom})
 
 
 @login_required(login_url='/account/login/')
