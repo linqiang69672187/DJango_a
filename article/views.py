@@ -84,12 +84,21 @@ def article_list(request):
 @csrf_exempt
 def edit_article(request,article_id):
     if request.method=="GET":
-        article_columns = ArticleColumn.objects.get(user=request.user)
+        article_columns = ArticleColumn.objects.filter(user=request.user)
         article=ArticlePost.objects.get(id=article_id)
         article_form = ArticlePostForm(initial={"title":article.title})
         article_columnfrom = ArticleColumnForm()
         return render(request,"article/column/redit_article.html",{"article":article,"article_columns":article_columns,"article_form":article_form,"article_columnform":article_columnfrom})
-
+    else:
+        try:
+            article = ArticlePost.objects.get(id=article_id)
+            article.body = request.POST["body"]
+            article.column = ArticleColumn.objects.get(id=request.POST["column_id"])
+            article.title = request.POST["title"]
+            article.save()
+            return HttpResponse(1)
+        except:
+            return HttpResponse(2)
 
 @login_required(login_url='/account/login/')
 def article_detail(request,id):
