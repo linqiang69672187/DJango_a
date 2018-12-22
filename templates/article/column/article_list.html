@@ -9,6 +9,7 @@
     <tr><td>{{ forloop.counter }}</td><td><a href="{% url 'article:arcticle_detail' article.id %}">{{ article.title }}</a></td><td>{{ article.column }}</td><td><a name="edit" href="{% url 'article:redit_article' article.id%}"><i class="fa  fa-pencil-square-o"></i> </a> <a name="delete" href="javascript:" onclick="del_article(this,{{ article.id }})"><i class="fa  fa-trash-o"></i> </a></td></tr>
     {% endfor %}
 </table>
+{% include "paginator.html" %}
 </div>
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>

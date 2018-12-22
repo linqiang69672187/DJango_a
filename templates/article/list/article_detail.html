@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    文章内容
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <header>
+        <h1>{{ article.title }}</h1>
+        <p>{{ article.author.username }}</p>
+    </header>
+    <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.css' %}">
+    <div id="editormd-view">
+        <textarea id="append-test" style="display: none;">
+            {{ article.body }}
+        </textarea>
+    </div>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from .forms import ArticleColumnForm,ArticlePostForm
 from django.views.decorators.http import require_POST,require_GET
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 
 # Create your views here.
@@ -116,3 +117,18 @@ def del_article(request):
         return HttpResponse(1)
     except:
         return HttpResponse(2)
+
+@login_required(login_url='/account/login/')
+def article_list(request):
+    article_list = ArticlePost.objects.filter(author=request.user)
+    paginator = Paginator(article_list,2) #创建分页对象，每页2个
+    page = request.GET.get("page")
+    try:
+        current_page = paginator.page(page)
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+
+    articles = current_page.object_list
+    return render(request,"article/column/article_list.html",{"articles":articles,"page":current_page})
