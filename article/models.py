@@ -19,6 +19,7 @@ class ArticlePost(models.Model):
     body = models.TextField()
     created = models.DateTimeField(default=timezone.now())
     updated = models.DateTimeField(auto_now=True)
+    users_like = models.ManyToManyField(User,related_name="articles_like",blank=True)
     class Mata:
         ordering = ("title",)
         index_together = (('id','slug'),) #建立索引，加快文章访问速度

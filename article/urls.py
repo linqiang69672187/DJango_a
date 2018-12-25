@@ -13,4 +13,5 @@ urlpatterns=[
     path('list_article/',list_views.article_titles,name="list_article"),
     path('list_detail/<int:id>/', list_views.article_detail, name="list_detail"),
     path('list_article_author/<str:username>/', list_views.article_titles_author, name="author_articles"),
+    path('like_article/', list_views.like_article, name="like_article"),
 ]
